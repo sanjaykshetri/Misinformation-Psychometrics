@@ -1,26 +1,121 @@
-# Misinformation Vulnerability Simulation V1
+# Misinformation Psychometrics
 
-This folder contains a theory-driven synthetic-data generator for pretesting a proposed
-multidimensional assessment of misinformation vulnerability.
+Misinformation Psychometrics is an open research program for conceptualizing, measuring, and modeling individual differences in vulnerability to misinformation.
 
-## Start here
+This project treats misinformation vulnerability as a multidimensional construct rather than a single trait. The central scientific question is whether people vary systematically in:
 
-1. Read `SIMULATION_SPEC_V1.md`.
-2. Run `simulate_misinformation_vulnerability_v1.py`.
-3. Inspect `SANITY_CHECKS.txt`.
-4. Analyze the generated CSV files.
+- their ability to discriminate true from false claims,
+- their response bias toward endorsing claims as true,
+- their confidence calibration,
+- their capacity to evaluate evidence,
+- their ability to update beliefs after corrective information,
+- their verification competence,
+- and their willingness to share content without sufficient checking.
 
-## Main files
+The repository is designed as a research program, with a synthetic simulation serving as a pilot benchmark for measurement recovery and psychometric analysis.
 
-- `participants.csv`: known ("true") participant latent traits.
-- `items.csv`: known item parameters.
-- `veracity_responses.csv`: initial truth judgments, confidence, sharing, exposure, and response time.
-- `updating_responses.csv`: pre/post-evidence judgments and appropriate belief movement.
-- `verification_responses.csv`: verification-task performance.
-- `scale_scores.csv`: observable participant-level summary scores.
+## Research problem
 
-The most important feature of simulation is that `participants.csv` contains the latent
-traits used to generate responses. This lets us test whether an analysis applied only to
-the observed responses can recover those known traits.
+Misinformation vulnerability is not well captured by a single "fake-news score." In practice, the phenomenon likely combines at least:
 
-These synthetic results are engineering checks, not psychometric validation evidence.
+- veracity discernment,
+- uncertainty calibration,
+- evidence evaluation,
+- belief updating,
+- verification skill,
+- sharing restraint,
+- and susceptibility to contextual distortions such as congruence or emotionality.
+
+The project asks whether these dimensions can be measured in a way that is theoretically coherent, empirically recoverable, and psychometrically useful.
+
+## Conceptual model
+
+A useful measurement model for misinformation vulnerability should separate three broad families of effects:
+
+1. Signal detection and factual discrimination
+2. Decision bias and confidence calibration
+3. Evidence-informed reasoning and verification behavior
+
+This is the motivation behind the simulation in Study 0: to test whether a theoretically specified multidimensional data-generating process can be recovered from observed behavior without using the generating parameters directly.
+
+## Research program
+
+The project is organized around staged research questions:
+
+- Study 0: synthetic benchmark and recovery analysis
+- Study 1: item development and pilot measurement design
+- Study 2: psychometric validation in human samples
+- Study 3: construct refinement and predictive validity
+- Study 4: applied intervention and decision-support modeling
+
+## Current study: Study 0
+
+Study 0 is a synthetic data exercise designed to evaluate whether psychometric methods can recover known dimensions from observed response patterns alone.
+
+The key methodological boundary is intentionally strict:
+
+DATA-GENERATING MODEL
+    ↓
+participants.csv
+(true latent parameters)
+    ↓
+      HIDDEN
+────────────────────────
+    ↓
+Observed responses only
+    ↓
+Psychometric analysis
+    ↓
+Estimated traits
+    ↓
+────────────────────────
+    ↓
+Compare estimates with
+known simulated truth
+
+This is a blind-analysis benchmark. We do not use the latent generating variables directly when fitting the model. Only after estimation do we reveal the generating parameters to evaluate recovery.
+
+The principal question for Study 0 is:
+
+> Given a theoretically specified multidimensional data-generating process, to what extent can conventional psychometric methods recover the simulated dimensions of misinformation vulnerability from observed assessment responses?
+
+## Repository structure
+
+- [README.md](README.md): project overview and scientific framing
+- [requirements.txt](requirements.txt): Python environment for analysis
+- [.gitignore](.gitignore): standard ignore rules for notebooks and virtual environments
+- [docs/construct_definition.md](docs/construct_definition.md): conceptual definition of misinformation vulnerability dimensions
+- [docs/research_roadmap.md](docs/research_roadmap.md): planned research agenda
+- [simulation/](simulation/): synthetic data generator, specification, and sanity checks
+- [data/simulated/](data/simulated/): generated CSV outputs used for analysis
+- [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb): exploratory analysis for Study 0
+- [studies/study_00_simulation/README.md](studies/study_00_simulation/README.md): blind-analysis guide for the simulated benchmark
+
+## Data and simulation files
+
+The data in this repository are methodological scaffolding for testing measurement and recovery, not evidence that the final construct is established.
+
+- [simulation/SIMULATION_SPEC_V1.md](simulation/SIMULATION_SPEC_V1.md): specification for the synthetic data-generating model
+- [simulation/simulate_misinformation_vulnerability_v1.py](simulation/simulate_misinformation_vulnerability_v1.py): script that generates synthetic responses
+- [simulation/SANITY_CHECKS.txt](simulation/SANITY_CHECKS.txt): baseline diagnostics on the generated data
+- [data/simulated/participants.csv](data/simulated/participants.csv): hidden generating parameters for the simulated sample
+- [data/simulated/items.csv](data/simulated/items.csv): item parameters and module metadata
+- [data/simulated/veracity_responses.csv](data/simulated/veracity_responses.csv): veracity judgments and confidence data
+- [data/simulated/updating_responses.csv](data/simulated/updating_responses.csv): belief-updating task responses
+- [data/simulated/verification_responses.csv](data/simulated/verification_responses.csv): verification-task responses
+- [data/simulated/scale_scores.csv](data/simulated/scale_scores.csv): participant-level summary scores
+
+## Reproducibility
+
+To run the simulation and explore the generated data:
+
+1. Create a Python environment and install dependencies from [requirements.txt](requirements.txt).
+2. Run the simulation script: python simulation/simulate_misinformation_vulnerability_v1.py
+3. Review the sanity checks in [simulation/SANITY_CHECKS.txt](simulation/SANITY_CHECKS.txt).
+4. Open [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb) for the exploratory Study 0 workflow.
+
+Important: the synthetic data are useful for methodological stress testing, but they are not a substitute for human measurement validation.
+
+---
+
+This repository is intentionally structured as a research program rather than a single one-off script. The project aims to evolve from synthetic construct recovery toward a defensible psychometric model of misinformation vulnerability.
