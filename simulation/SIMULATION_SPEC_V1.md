@@ -195,7 +195,7 @@ One row per participant with observable summary scores.
 - Demographic variables are intentionally omitted from causal response generation in V1.
 - Political congruence is abstract rather than tied to real parties or issues.
 - No natural-language claim content is generated yet.
-- No formal multidimensional IRT model is fitted in this package.
+- The V1 generator does not fit a formal multidimensional model; initial item-level recovery models are documented separately in Study 0B.
 - Simulated reliability and validity statistics are engineering checks, not empirical evidence.
 
 ## Recommended V2 extensions

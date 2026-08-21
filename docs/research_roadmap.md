@@ -10,6 +10,24 @@ Key questions:
 - Which conventional methods recover the simulated structure most accurately?
 - Which dimensions remain entangled under realistic noise and carelessness?
 
+### Study 0A: descriptive observed-only benchmark
+
+Compute participant summaries and save observed estimates without loading the latent generating parameters.
+
+### Study 0B: item-level model recovery
+
+Fit item-level models before revealing the simulated truth:
+
+- a veracity model with separate participant discernment and response-bias parameters,
+- a binary item-response model for verification ability,
+- and a longitudinal multilevel updating model with evidence strength and complexity as item predictors.
+
+Compare estimated traits with the generating values only in a post-estimation recovery phase. The first two models are implemented as an initial benchmark in `studies/study_00_simulation/model_recovery.py`; updating remains a planned extension because its initial-belief to evidence to post-belief structure is not adequately represented by a conventional binary IRT score.
+
+### Study 0C: Monte Carlo robustness
+
+Repeat Study 0B across sample size, item count, item difficulty, response noise, carelessness, and latent correlation conditions before beginning human item development.
+
 ## Study 1: item and instrument development
 
 Purpose: translate the construct into a human-facing assessment protocol.

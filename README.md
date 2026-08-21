@@ -88,8 +88,9 @@ The principal question for Study 0 is:
 - [docs/research_roadmap.md](docs/research_roadmap.md): planned research agenda
 - [simulation/](simulation/): synthetic data generator, specification, and sanity checks
 - [data/simulated/](data/simulated/): generated CSV outputs used for analysis
-- [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb): exploratory analysis for Study 0
+- [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb): observed-only Study 0A exploratory analysis
 - [studies/study_00_simulation/README.md](studies/study_00_simulation/README.md): blind-analysis guide for the simulated benchmark
+- [studies/study_00_simulation/model_recovery.py](studies/study_00_simulation/model_recovery.py): initial item-level Study 0B recovery models
 
 ## Data and simulation files
 
@@ -104,6 +105,7 @@ The data in this repository are methodological scaffolding for testing measureme
 - [data/simulated/updating_responses.csv](data/simulated/updating_responses.csv): belief-updating task responses
 - [data/simulated/verification_responses.csv](data/simulated/verification_responses.csv): verification-task responses
 - [data/simulated/scale_scores.csv](data/simulated/scale_scores.csv): participant-level summary scores
+- [data/simulated/observed_participant_summary.csv](data/simulated/observed_participant_summary.csv): observed-only estimates produced by Study 0A
 
 ## Reproducibility
 
@@ -112,7 +114,8 @@ To run the simulation and explore the generated data:
 1. Create a Python environment and install dependencies from [requirements.txt](requirements.txt).
 2. Run the simulation script: python simulation/simulate_misinformation_vulnerability_v1.py
 3. Review the sanity checks in [simulation/SANITY_CHECKS.txt](simulation/SANITY_CHECKS.txt).
-4. Open [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb) for the exploratory Study 0 workflow.
+4. Open [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb) for the observed-only Study 0A workflow.
+5. Run `python studies/study_00_simulation/model_recovery.py` for the item-level Study 0B benchmark and post-estimation recovery comparison.
 
 Important: the synthetic data are useful for methodological stress testing, but they are not a substitute for human measurement validation.
 

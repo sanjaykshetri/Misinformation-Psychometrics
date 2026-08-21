@@ -97,7 +97,7 @@ Additional but weaker associations were also observed:
 
 The strongest results support the viability of a multidimensional measurement framework for misinformation vulnerability. The clearest recovery was in discernment, which is expected given that veracity discrimination is the central latent signal of the assessment. Sharing restraint and verification performance also showed robust alignment with their underlying generating dimensions, suggesting that these are separable behavioral domains rather than mere byproducts of overall accuracy.
 
-The moderate recovery for updating and evidence evaluation is more informative than discouraging. It suggests that these constructs are not trivially recoverable from simple summary scores alone and that additional model structure is needed to distinguish evidence-based revision from general accuracy and confidence behavior. In other words, the synthetic benchmark indicates that the conceptual distinction is valid, but the current measurement approach is not yet fully sufficient to recover those dimensions cleanly in a single-stage summary analysis.
+The moderate recovery for updating and evidence evaluation is more informative than discouraging. It suggests that these constructs are not trivially recoverable from simple summary scores alone and that additional model structure is needed to distinguish evidence-based revision from general accuracy and confidence behavior. The synthetic benchmark cannot establish that the conceptual distinction is valid because those distinctions were programmed into the data-generating process. It does show that, under the specified assumptions, the proposed dimensions are computationally distinguishable to some degree, while the current measurement approach does not recover updating and evidence evaluation cleanly in a single-stage summary analysis.
 
 This pattern is consistent with the intended function of Study 0. The study is not meant to establish final construct validity. Rather, it reveals where the measurement architecture is strong and where it is conceptually or statistically entangled. It therefore serves as a guide for the next stages of the research program.
 
@@ -114,6 +114,6 @@ The next steps should prioritize:
 
 ## Conclusion
 
-Study 0 demonstrates that the proposed misinformation-vulnerability framework is structurally coherent under known synthetic conditions. The strongest dimensions are recoverable from observed behavior, especially discernment, verification skill, and sharing restraint. More subtle dimensions such as updating and evidence evaluation remain partially entangled, which provides a clear direction for future refinement.
+Study 0 shows that the proposed dimensions are computationally distinguishable under the specified synthetic data-generating assumptions. The strongest dimensions are recoverable from observed behavior, especially discernment, verification skill, and sharing restraint. More subtle dimensions such as updating and evidence evaluation remain partially entangled, which provides a clear direction for model and item-design refinement.
 
 The benchmark therefore supports continued development of the project. It does not yet provide evidence of human validity, but it provides the methodological justification for moving to more advanced psychometric modeling and eventual empirical data collection.
