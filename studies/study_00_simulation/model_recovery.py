@@ -1,7 +1,11 @@
-"""Initial item-level recovery models for Study 0B.
+"""Item-level recovery models for Study 0B.
 
-Observed responses are used to estimate person parameters first. Hidden
-participant traits are loaded only for the final post-estimation comparison.
+Observed responses are used to estimate person parameters first: a veracity
+model (discernment, response bias), a binary IRT-style verification model,
+a binary IRT-style evidence-comprehension model, and a two-level updating
+model (evidence strength and the observed comprehension outcome as item/trial
+predictors). Hidden participant traits are loaded only for the final
+post-estimation comparison.
 """
 
 from pathlib import Path
@@ -10,6 +14,7 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
 from scipy.special import expit
+from statsmodels.regression.mixed_linear_model import MixedLM
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -98,17 +103,83 @@ def fit_verification_model(verification):
     }), difficulty
 
 
+def fit_evidence_comprehension_model(updating):
+    """Estimate evidence-evaluation ability from observed comprehension checks.
+
+    comprehension_correct is a directly observed per-trial response (did the
+    participant correctly grasp the corrective evidence?), so this reuses the
+    same person-item logistic model as verification rather than inferring the
+    trait indirectly from belief-movement noise.
+    """
+    data = updating.sort_values(["participant_id", "item_id"]).copy()
+    participant_codes, participant_values = pd.factorize(data["participant_id"])
+    item_codes, _ = pd.factorize(data["item_id"])
+    ability, _ = _fit_logistic_person_item(
+        data["comprehension_correct"].to_numpy(float),
+        participant_codes,
+        item_codes,
+        len(participant_values),
+        data["item_id"].nunique(),
+    )
+    return pd.DataFrame({
+        "participant_id": participant_values,
+        "estimated_evidence_evaluation": ability,
+    })
+
+
+def fit_updating_model(updating):
+    """Estimate belief-revision quality from a two-level movement model.
+
+    Fixed effects are the observed evidence strength (an item property) and
+    the *within-person* deviation of comprehension_correct (a trial-level
+    response, not the hidden evidence_evaluation trait). Comprehension and
+    updating are correlated traits, so comprehension_correct's per-person
+    mean is deliberately left out of the fixed effects (a Mundlak-style
+    within/between decomposition): otherwise a single shared slope on the raw
+    trial-level response would conflate the item-level effect of
+    comprehension with the between-person variance that the random intercept
+    is meant to capture, suppressing the updating-ability estimate.
+    """
+    data = updating.copy()
+    data["evidence_strength_c"] = data["evidence_strength"] - data["evidence_strength"].mean()
+    person_mean_comprehension = data.groupby("participant_id")["comprehension_correct"].transform("mean")
+    data["comprehension_within"] = data["comprehension_correct"] - person_mean_comprehension
+
+    model = MixedLM.from_formula(
+        "appropriate_movement ~ evidence_strength_c + comprehension_within",
+        groups="participant_id",
+        data=data,
+    )
+    fit = model.fit(reml=True)
+
+    rows = []
+    for participant_id, effects in fit.random_effects.items():
+        intercept_re = effects.iloc[0]
+        rows.append({
+            "participant_id": participant_id,
+            "estimated_updating": fit.fe_params["Intercept"] + intercept_re,
+        })
+    return pd.DataFrame(rows)
+
+
 def main():
     veracity = pd.read_csv(DATA_DIR / "veracity_responses.csv")
     verification = pd.read_csv(DATA_DIR / "verification_responses.csv")
+    updating = pd.read_csv(DATA_DIR / "updating_responses.csv")
     participants = pd.read_csv(DATA_DIR / "participants.csv")
 
     veracity_estimates = fit_veracity_model(veracity)
     verification_estimates, _ = fit_verification_model(verification)
-    estimates = veracity_estimates.merge(verification_estimates, on="participant_id")
+    updating_estimates = fit_updating_model(updating)
+    comprehension_estimates = fit_evidence_comprehension_model(updating)
+    estimates = (
+        veracity_estimates.merge(verification_estimates, on="participant_id")
+        .merge(updating_estimates, on="participant_id")
+        .merge(comprehension_estimates, on="participant_id")
+    )
 
     recovery = estimates.merge(
-        participants[["participant_id", "discernment", "credulity_bias", "verification"]],
+        participants[["participant_id", "discernment", "credulity_bias", "verification", "updating", "evidence_evaluation"]],
         on="participant_id",
         how="inner",
     )
@@ -117,17 +188,23 @@ def main():
             "discernment",
             "response_bias_vs_credulity_bias",
             "verification",
+            "updating",
+            "evidence_evaluation",
         ],
         "estimate_column": [
             "estimated_discernment",
             "estimated_response_bias",
             "estimated_verification",
+            "estimated_updating",
+            "estimated_evidence_evaluation",
         ],
-        "truth_column": ["discernment", "credulity_bias", "verification"],
+        "truth_column": ["discernment", "credulity_bias", "verification", "updating", "evidence_evaluation"],
         "correlation": [
             recovery["estimated_discernment"].corr(recovery["discernment"]),
             recovery["estimated_response_bias"].corr(recovery["credulity_bias"]),
             recovery["estimated_verification"].corr(recovery["verification"]),
+            recovery["estimated_updating"].corr(recovery["updating"]),
+            recovery["estimated_evidence_evaluation"].corr(recovery["evidence_evaluation"]),
         ],
     })
     estimates.to_csv(OUTPUT_PATH, index=False)

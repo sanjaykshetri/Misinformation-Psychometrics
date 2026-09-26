@@ -16,7 +16,7 @@ To determine whether a multidimensional misinformation-vulnerability construct c
 
 ## Preliminary results
 
-The synthetic benchmark shows the clearest recovery for discernment and sharing restraint, with strong correspondence between latent skill and observed performance metrics. Verification accuracy also tracks the hidden verification dimension closely. Updating and evidence evaluation are recoverable but less cleanly separated from general response quality. These are recovery results under programmed data-generating assumptions, not construct-validity evidence.
+The synthetic benchmark shows the clearest recovery for discernment and sharing restraint, with strong correspondence between latent skill and observed performance metrics. Verification accuracy also tracks the hidden verification dimension closely. The item-level updating model recovers the updating trait moderately (r ~ 0.26-0.55 across conditions). Evidence evaluation, once redesigned (V1.1) to use an observable comprehension-check response instead of a hidden latent, recovers well and stably (r ~ 0.68-0.75 across all Study 0C conditions, no sign reversals). These are recovery results under programmed data-generating assumptions, not construct-validity evidence.
 
 The full summary is available in [study_00_results.md](study_00_results.md).
 
@@ -28,4 +28,8 @@ The output of Study 0 is not a final measure. It is a diagnostic check that the 
 
 ## Study 0B: item-level model recovery
 
-Run `model_recovery.py` after Study 0A. The first-pass models estimate participant discernment and response bias from item-level veracity judgments, and participant verification ability from item-level binary verification outcomes. The script then performs the post-estimation comparison with the hidden simulated traits. Updating is intentionally reserved for a longitudinal multilevel model rather than forced into a standard IRT score.
+Run `model_recovery.py` after Study 0A. The models estimate participant discernment and response bias from item-level veracity judgments, participant verification ability from item-level binary verification outcomes, belief-updating quality from a two-level (mixed-effects) model of belief movement with evidence strength as an item-level predictor, and evidence-evaluation ability from a person-item IRT-style model fit directly to the observed comprehension-check responses (V1.1). The script then performs the post-estimation comparison with the hidden simulated traits.
+
+## Study 0C: Monte Carlo robustness sweep
+
+Run `study_00c_monte_carlo.py` after Study 0B. It repeats the same recovery pipeline on freshly simulated datasets under varied conditions (sample size, item count, item difficulty spread, response noise, carelessness rate, latent correlation strength), one factor away from the Study 0 baseline per condition, and writes per-condition recovery correlations to `monte_carlo_results.csv`. This is a first-pass sensitivity sweep rather than a fully replicated Monte Carlo design with repeated-sampling variability at each condition.

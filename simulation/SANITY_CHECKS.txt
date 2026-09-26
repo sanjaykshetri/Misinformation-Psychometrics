@@ -9,7 +9,7 @@ Mean d-prime: 0.692
 Corr(true discernment, accuracy): 0.924
 Corr(true discernment, d-prime): 0.932
 Corr(true credulity bias, criterion): -0.889
-Corr(true updating, appropriate movement): 0.371
-Corr(true verification, verification accuracy): 0.829
+Corr(true updating, appropriate movement): 0.383
+Corr(true verification, verification accuracy): 0.827
 Corr(true sharing restraint, observed restraint): 0.929
 Mean careless trial rate: 0.057

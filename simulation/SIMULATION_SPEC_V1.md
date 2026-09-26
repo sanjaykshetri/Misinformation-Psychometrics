@@ -121,15 +121,21 @@ The simulation allows high-confidence errors and poorly calibrated respondents.
 
 ### Evidence updating
 
-Participants first make an initial judgment. They then receive corrective evidence.
-Movement toward the evidence-supported answer depends on:
+Participants first make an initial judgment. They then answer an observable
+comprehension-check response about the corrective evidence (did they correctly
+grasp what it showed), which depends on evidence-evaluation ability, evidence
+complexity, and general knowledge. Movement toward the evidence-supported
+answer is driven by the same underlying comprehension signal (not the binary
+comprehension-check response itself, which is a noisy indicator of it) plus:
 
 - updating latent trait
-- evidence-evaluation ability
 - evidence strength
-- evidence complexity
 - emotional reactivity
 - random error
+
+This separation (V1.1; see the revision note below) lets evidence-evaluation
+be estimated from its own observed binary outcome instead of only being
+inferred indirectly from belief-movement noise.
 
 ### Verification
 
@@ -166,7 +172,10 @@ One row per item containing item parameters and module membership.
 One row per participant × veracity item.
 
 ### updating_responses.csv
-One row per participant × updating item.
+One row per participant × updating item, including the observed
+`comprehension_correct` response (whether the participant correctly grasped
+the corrective evidence) alongside initial/post belief probabilities and
+appropriate movement.
 
 ### verification_responses.csv
 One row per participant × verification item.
@@ -195,8 +204,27 @@ One row per participant with observable summary scores.
 - Demographic variables are intentionally omitted from causal response generation in V1.
 - Political congruence is abstract rather than tied to real parties or issues.
 - No natural-language claim content is generated yet.
-- The V1 generator does not fit a formal multidimensional model; initial item-level recovery models are documented separately in Study 0B.
+- The V1 generator does not fit a formal multidimensional model; item-level recovery models (veracity, verification, updating, and evidence comprehension) are documented separately in Study 0B.
 - Simulated reliability and validity statistics are engineering checks, not empirical evidence.
+
+## V1.1 revision: observable evidence comprehension (2026-09-26)
+
+Study 0B/0C (V1) found that evidence-evaluation was not reliably recoverable
+and was frequently sign-reversed across Monte Carlo conditions, because the
+only trace of it in the exported data was a hidden `evidence_comprehension_latent`
+column folded into the belief-movement calculation — not something a real
+assessment could observe. Following the continued-influence-effect literature's
+separation of comprehending a correction from acting on it (see
+[docs/literature_review.md](../docs/literature_review.md)), the updating task now emits an observable
+binary `comprehension_correct` response (a noisy realization of the same
+underlying comprehension signal that also still drives movement), replacing
+the leaked latent column. Paired with a person-item IRT-style model fit
+directly to `comprehension_correct` (`fit_evidence_comprehension_model` in
+`studies/study_00_simulation/model_recovery.py`), this raised evidence-evaluation
+recovery from r ≈ 0.13 (frequently negative across conditions) to a stable
+r ≈ 0.68–0.75 across the full Study 0C sweep, with updating recovery unchanged
+at r ≈ 0.26–0.55. This also fixed an unrelated bug where the generator wrote
+output CSVs into `simulation/` instead of `data/simulated/`.
 
 ## Recommended V2 extensions
 
@@ -204,7 +232,7 @@ One row per participant with observable summary scores.
 2. Add test-retest occasions.
 3. Add multidimensional IRT estimation.
 4. Add DIF simulations.
-5. Vary sample size and test length through Monte Carlo replications.
+5. Vary sample size and test length through Monte Carlo replications. A first-pass one-factor-at-a-time sweep across sample size, item count, difficulty, noise, carelessness, and latent correlation is implemented in `studies/study_00_simulation/study_00c_monte_carlo.py`; a fully replicated design with repeated-sampling variability at each condition remains future work.
 6. Add missingness and speeded responding.
 7. Add realistic natural-language item stems after construct review.
 8. Fit simulation parameters to empirical pilot data once human data become available.

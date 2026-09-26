@@ -86,11 +86,14 @@ The principal question for Study 0 is:
 - [.gitignore](.gitignore): standard ignore rules for notebooks and virtual environments
 - [docs/construct_definition.md](docs/construct_definition.md): conceptual definition of misinformation vulnerability dimensions
 - [docs/research_roadmap.md](docs/research_roadmap.md): planned research agenda
+- [docs/project_status.md](docs/project_status.md): current status report and next-step roadmap grounded in psychometric research practice
+- [docs/literature_review.md](docs/literature_review.md): synthesis of existing research relevant to misinformation vulnerability measurement (unverified citations, flagged for follow-up)
 - [simulation/](simulation/): synthetic data generator, specification, and sanity checks
 - [data/simulated/](data/simulated/): generated CSV outputs used for analysis
 - [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb): observed-only Study 0A exploratory analysis
 - [studies/study_00_simulation/README.md](studies/study_00_simulation/README.md): blind-analysis guide for the simulated benchmark
-- [studies/study_00_simulation/model_recovery.py](studies/study_00_simulation/model_recovery.py): initial item-level Study 0B recovery models
+- [studies/study_00_simulation/model_recovery.py](studies/study_00_simulation/model_recovery.py): item-level Study 0B recovery models (veracity, verification, updating, and evidence comprehension)
+- [studies/study_00_simulation/study_00c_monte_carlo.py](studies/study_00_simulation/study_00c_monte_carlo.py): Study 0C Monte Carlo robustness sweep across data-generating conditions
 
 ## Data and simulation files
 
@@ -116,6 +119,7 @@ To run the simulation and explore the generated data:
 3. Review the sanity checks in [simulation/SANITY_CHECKS.txt](simulation/SANITY_CHECKS.txt).
 4. Open [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb) for the observed-only Study 0A workflow.
 5. Run `python studies/study_00_simulation/model_recovery.py` for the item-level Study 0B benchmark and post-estimation recovery comparison.
+6. Run `python studies/study_00_simulation/study_00c_monte_carlo.py` for the Study 0C Monte Carlo robustness sweep across sample size, item count, difficulty, noise, carelessness, and latent correlation conditions.
 
 Important: the synthetic data are useful for methodological stress testing, but they are not a substitute for human measurement validation.
 

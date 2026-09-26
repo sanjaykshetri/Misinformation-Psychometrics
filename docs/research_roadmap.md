@@ -20,13 +20,14 @@ Fit item-level models before revealing the simulated truth:
 
 - a veracity model with separate participant discernment and response-bias parameters,
 - a binary item-response model for verification ability,
-- and a longitudinal multilevel updating model with evidence strength and complexity as item predictors.
+- a two-level (mixed-effects) updating model with evidence strength and the observed comprehension outcome as predictors,
+- and a binary item-response model for evidence-evaluation ability, fit directly to an observable comprehension-check response (V1.1).
 
-Compare estimated traits with the generating values only in a post-estimation recovery phase. The first two models are implemented as an initial benchmark in `studies/study_00_simulation/model_recovery.py`; updating remains a planned extension because its initial-belief to evidence to post-belief structure is not adequately represented by a conventional binary IRT score.
+Compare estimated traits with the generating values only in a post-estimation recovery phase. All four models are implemented in `studies/study_00_simulation/model_recovery.py`. Discernment, verification, and evidence evaluation recover strongly; updating recovers moderately. Evidence evaluation was initially weak and sign-unstable when measured only as a side effect of belief movement (V1); redesigning it as its own observable comprehension-check response resolved this (see [project_status.md](project_status.md)).
 
 ### Study 0C: Monte Carlo robustness
 
-Repeat Study 0B across sample size, item count, item difficulty, response noise, carelessness, and latent correlation conditions before beginning human item development.
+Repeat Study 0B across sample size, item count, item difficulty, response noise, carelessness, and latent correlation conditions before beginning human item development. Implemented in `studies/study_00_simulation/study_00c_monte_carlo.py` as a one-factor-at-a-time sensitivity sweep; discernment, response-bias, verification, updating, and evidence-evaluation recovery are all stable in sign and magnitude across every condition tested (V1.1).
 
 ## Study 1: item and instrument development
 

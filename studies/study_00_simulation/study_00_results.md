@@ -69,8 +69,8 @@ The synthetic data generated a broad and interpretable range of behavior:
 - mean confidence: 83.314
 - share rate: 0.419
 - careless-trial rate: 0.057
-- updating success rate: 0.761
-- verification accuracy: 0.445
+- updating success rate: 0.764
+- verification accuracy: 0.440
 
 These values suggest that the simulation created sufficient variability for recovery to be measured while preserving realistic nuisance effects such as careless responding.
 
@@ -84,36 +84,58 @@ The strongest observed relationships between latent generating traits and observ
 - sharing restraint and share rate: r = -0.929
 - sharing restraint and sharing restraint score: r = 0.929
 - carelessness and careless-trial rate: r = 0.906
-- verification and verification accuracy: r = 0.829
+- verification and verification accuracy: r = 0.827
+- evidence evaluation and raw comprehension-check success rate: r = 0.718 (V1.1; see below)
 
 Additional but weaker associations were also observed:
 
-- updating and updating success rate: r = 0.545
-- evidence evaluation and updating success rate: r = 0.510
-- evidence evaluation and verification accuracy: r = 0.504
+- updating and updating success rate: r = 0.553
+- evidence evaluation and updating success rate: r = 0.504
+- evidence evaluation and verification accuracy: r = 0.506
 - general knowledge and d-prime: r = 0.458
+
+### Item-level updating and evidence-comprehension models (Study 0B, V1.1)
+
+The updating task was redesigned (V1.1) so that evidence comprehension is a directly observable comprehension-check response (`comprehension_correct`) rather than a hidden latent folded into the movement calculation — see the V1.1 revision note in [SIMULATION_SPEC_V1.md](../../simulation/SIMULATION_SPEC_V1.md) and the rationale in [docs/literature_review.md](../../docs/literature_review.md). Two separately-identified item-level models are now fit:
+
+- `fit_evidence_comprehension_model`: a person-item (Rasch-style) IRT model fit directly to `comprehension_correct`, the same approach used for verification. On the baseline dataset this recovers `evidence_evaluation` at r = 0.707.
+- `fit_updating_model`: a two-level (mixed-effects) model of `appropriate_movement` with evidence strength and the *within-person* deviation of `comprehension_correct` as fixed effects (a Mundlak-style within/between decomposition, needed because comprehension and updating are correlated traits and a naive shared slope on the raw response would steal between-person variance from the random intercept). This recovers `updating` at r = 0.383, matching the earlier summary-score-based estimate.
+
+This is a substantial improvement over the V1 design, where evidence-evaluation recovery was only r = 0.133 and was frequently sign-reversed across Monte Carlo conditions (see below).
+
+### Monte Carlo robustness sweep (Study 0C, V1.1)
+
+The four item-level models (veracity, verification, updating, evidence comprehension) were re-fit on newly simulated datasets that each vary one factor away from the baseline: sample size (250-2,000), item count (20-80 veracity items), item difficulty spread, response noise, carelessness rate, and latent correlation strength. Full per-condition results are in [monte_carlo_results.csv](monte_carlo_results.csv).
+
+- Discernment recovery is stable across all conditions (r = 0.87-0.94).
+- Response-bias recovery is stable but consistently moderate (r = 0.49-0.57).
+- Verification recovery is stable (r = 0.78-0.84).
+- Updating recovery ranges from r = 0.26 to 0.55, generally improving with higher item difficulty spread and response noise.
+- Evidence-evaluation recovery is now stable and strong across every condition (r = 0.68-0.75), with no sign reversals — a qualitative change from the V1 design, where the equivalent range included negative values.
+
+The practical implication is that the current architecture is now robust across a wide range of design choices for all five estimated quantities: discernment, response bias, verification, updating, and evidence evaluation.
 
 ## Discussion
 
 The strongest results support the viability of a multidimensional measurement framework for misinformation vulnerability. The clearest recovery was in discernment, which is expected given that veracity discrimination is the central latent signal of the assessment. Sharing restraint and verification performance also showed robust alignment with their underlying generating dimensions, suggesting that these are separable behavioral domains rather than mere byproducts of overall accuracy.
 
-The moderate recovery for updating and evidence evaluation is more informative than discouraging. It suggests that these constructs are not trivially recoverable from simple summary scores alone and that additional model structure is needed to distinguish evidence-based revision from general accuracy and confidence behavior. The synthetic benchmark cannot establish that the conceptual distinction is valid because those distinctions were programmed into the data-generating process. It does show that, under the specified assumptions, the proposed dimensions are computationally distinguishable to some degree, while the current measurement approach does not recover updating and evidence evaluation cleanly in a single-stage summary analysis.
+The V1 design's weak, unstable recovery of evidence evaluation turned out to be a measurement-architecture artifact rather than an inherent property of the construct: once evidence comprehension was represented as its own directly observable response (V1.1) rather than a hidden latent buried inside the movement calculation, recovery became strong and stable across every Monte Carlo condition tested. This is a useful negative-then-positive result for the research program: it shows that "this dimension isn't recoverable" conclusions from a synthetic benchmark can reflect a fixable design flaw, and that fixing it is often cheaper in simulation than in a human pilot. Updating remains only moderately recoverable, which is itself informative — belief-revision quality appears to carry real but limited independent signal beyond comprehension and evidence strength, consistent with the continued-influence-effect/backfire-effect literature's caution that corrections do not reliably move beliefs by a fixed amount.
 
-This pattern is consistent with the intended function of Study 0. The study is not meant to establish final construct validity. Rather, it reveals where the measurement architecture is strong and where it is conceptually or statistically entangled. It therefore serves as a guide for the next stages of the research program.
+This pattern is consistent with the intended function of Study 0. The study is not meant to establish final construct validity. Rather, it reveals where the measurement architecture is strong and where it is conceptually or statistically entangled, and lets that entanglement be diagnosed and iterated on cheaply before human data collection. It therefore serves as a guide for the next stages of the research program.
 
 ## Limitations and future work
 
-This study is deliberately limited to synthetic data. Its value lies in methodological stress testing, not in claims about real-world human performance. The summary metrics used here are coarse and may obscure important multidimensional relationships. In particular, updating and evidence evaluation appear partially confounded with general response quality and confidence-driven behavior under the current scoring regime.
+This study is deliberately limited to synthetic data. Its value lies in methodological stress testing, not in claims about real-world human performance. Updating recovery, while now well-identified via the within/between decomposition, remains only moderate (r = 0.26-0.55) — this may be a genuine property of how much independent signal belief-revision quality carries once comprehension and evidence strength are accounted for, or it may reflect that a single initial-judgment/correction/post-judgment cycle per item is still a thin design. Real human items should be developed from the continued-influence-effect and lateral-reading literatures (see [docs/literature_review.md](../../docs/literature_review.md)) rather than assumed from the current synthetic structure alone.
 
 The next steps should prioritize:
 
-1. more explicit separation of updating and evidence evaluation,
-2. multi-dimensional scoring or latent-variable modeling,
-3. item refinement for better construct discrimination,
-4. and eventual validation in human samples.
+1. testing whether a richer updating item structure (e.g., multiple evidence rounds, or an explicit weak-then-strong evidence sequence) improves updating recovery further,
+2. item refinement for better construct discrimination, grounded in the literature synthesis,
+3. a fully replicated Monte Carlo design with repeated-sampling variability at each condition,
+4. and eventual validation in human samples, using real comprehension-check items modeled on the lateral-reading and continued-influence-effect paradigms.
 
 ## Conclusion
 
-Study 0 shows that the proposed dimensions are computationally distinguishable under the specified synthetic data-generating assumptions. The strongest dimensions are recoverable from observed behavior, especially discernment, verification skill, and sharing restraint. More subtle dimensions such as updating and evidence evaluation remain partially entangled, which provides a clear direction for model and item-design refinement.
+Study 0 shows that the proposed dimensions are computationally distinguishable under the specified synthetic data-generating assumptions. All five dimensions estimated by the item-level models are now recoverable from observed behavior with reasonable stability: discernment, verification skill, and sharing restraint most strongly, evidence evaluation strongly once measured through an observable comprehension-check response (V1.1), and updating moderately. This provides a clearer direction for human item design than the V1 benchmark did on its own.
 
 The benchmark therefore supports continued development of the project. It does not yet provide evidence of human validity, but it provides the methodological justification for moving to more advanced psychometric modeling and eventual empirical data collection.
