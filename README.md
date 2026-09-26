@@ -79,6 +79,8 @@ The principal question for Study 0 is:
 
 > Given a theoretically specified multidimensional data-generating process, to what extent can conventional psychometric methods recover the simulated dimensions of misinformation vulnerability from observed assessment responses?
 
+**Current status:** all five quantities estimated by the item-level models (discernment, response bias, verification, evidence evaluation, and belief updating) are recoverable and stable across a 13-condition Monte Carlo sensitivity sweep. Evidence-evaluation recovery was initially weak and sign-unstable because it was inferred only indirectly from belief-movement noise; redesigning it as a directly observable comprehension-check response (V1.1) fixed this. Full results are in [studies/study_00_simulation/study_00_results.md](studies/study_00_simulation/study_00_results.md), a status report and forward-looking roadmap are in [docs/project_status.md](docs/project_status.md), and a draft write-up is in [studies/study_00_simulation/manuscript_apa.md](studies/study_00_simulation/manuscript_apa.md) (also available as a formatted Word document, `manuscript_apa.docx`; external literature citations there are flagged `[VERIFY]` pending confirmation against original sources).
+
 ## Repository structure
 
 - [README.md](README.md): project overview and scientific framing
@@ -92,6 +94,8 @@ The principal question for Study 0 is:
 - [data/simulated/](data/simulated/): generated CSV outputs used for analysis
 - [notebooks/01_simulation_eda.ipynb](notebooks/01_simulation_eda.ipynb): observed-only Study 0A exploratory analysis
 - [studies/study_00_simulation/README.md](studies/study_00_simulation/README.md): blind-analysis guide for the simulated benchmark
+- [studies/study_00_simulation/study_00_results.md](studies/study_00_simulation/study_00_results.md): full write-up of the Study 0 methods and results
+- [studies/study_00_simulation/manuscript_apa.md](studies/study_00_simulation/manuscript_apa.md) / [manuscript_apa.docx](studies/study_00_simulation/manuscript_apa.docx): APA-style manuscript draft of Study 0 (external citations flagged `[VERIFY]`, pending confirmation)
 - [studies/study_00_simulation/model_recovery.py](studies/study_00_simulation/model_recovery.py): item-level Study 0B recovery models (veracity, verification, updating, and evidence comprehension)
 - [studies/study_00_simulation/study_00c_monte_carlo.py](studies/study_00_simulation/study_00c_monte_carlo.py): Study 0C Monte Carlo robustness sweep across data-generating conditions
 
@@ -109,6 +113,8 @@ The data in this repository are methodological scaffolding for testing measureme
 - [data/simulated/verification_responses.csv](data/simulated/verification_responses.csv): verification-task responses
 - [data/simulated/scale_scores.csv](data/simulated/scale_scores.csv): participant-level summary scores
 - [data/simulated/observed_participant_summary.csv](data/simulated/observed_participant_summary.csv): observed-only estimates produced by Study 0A
+- [studies/study_00_simulation/model_recovery_results.csv](studies/study_00_simulation/model_recovery_results.csv): per-participant Study 0B recovery estimates
+- [studies/study_00_simulation/monte_carlo_results.csv](studies/study_00_simulation/monte_carlo_results.csv): per-condition Study 0C recovery correlations
 
 ## Reproducibility
 

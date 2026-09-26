@@ -119,7 +119,7 @@ one convenient parameter setting.
 We report two versions of the evidence-evaluation model. The first version
 (V1) inferred evidence-evaluation ability only indirectly, as a random slope
 in a model of belief movement. Because this recovered evidence-evaluation
-poorly and unstably, we redesigned the measurement (V1.2) so that evidence
+poorly and unstably, we redesigned the measurement (V1.1) so that evidence
 comprehension is a directly observable, binary comprehension-check response,
 modeled the same way as the verification task. We report both versions here
 because the contrast is itself a methodological finding: a synthetic
@@ -165,7 +165,7 @@ additive noise and a per-trial probability of careless (near-random)
 responding. Full generating equations are documented in
 `simulation/SIMULATION_SPEC_V1.md`.
 
-**The V1.2 revision.** In the original design, evidence comprehension was
+**The V1.1 revision.** In the original design, evidence comprehension was
 represented only as a hidden latent variable folded directly into the
 belief-movement calculation; it was not a response a real assessment could
 ever observe. We revised the model so that participants instead emit an
@@ -254,11 +254,11 @@ moderately (*r* = .549); belief updating was recovered modestly
 | Evidence comprehension (person–item IRT) | Evidence-evaluation ability | Evidence evaluation | .707 |
 | Updating (two-level model) | Updating ability | Updating | .383 |
 
-*Note.* Evidence-evaluation recovery reflects the V1.2 design, described
+*Note.* Evidence-evaluation recovery reflects the V1.1 design, described
 above. An earlier version, in which evidence-evaluation ability was inferred
 only as a random slope in the updating model without an observable
 comprehension response, recovered evidence evaluation at *r* = .133. A
-first attempt at the V1.2 updating model, which entered the raw
+first attempt at the V1.1 updating model, which entered the raw
 (non-centered) `comprehension_correct` response as a shared fixed effect,
 recovered updating at only *r* = .165, because comprehension and updating
 are correlated traits (population *r* = .52 in the generating model) and the
@@ -274,7 +274,7 @@ Table 2 summarizes recovery across the 13 sweep conditions. Discernment
 (range = .778–.843) recovery were stable in both sign and approximate
 magnitude across every condition. Updating recovery was more variable
 (range = .264–.551) but never fell to zero or reversed sign. Evidence-
-evaluation recovery under the V1.2 design was stable and strong everywhere
+evaluation recovery under the V1.1 design was stable and strong everywhere
 tested (range = .684–.748); the same sweep applied to the earlier V1 design
 had produced negative correlations in 8 of 12 non-baseline conditions
 (range = −.231 to .228), which we interpret as a measurement-architecture
@@ -283,7 +283,7 @@ unmeasurable.
 
 *Table 2*
 
-*Monte Carlo Robustness Sweep (V1.2 Design)*
+*Monte Carlo Robustness Sweep (V1.1 Design)*
 
 | Condition | Discernment *r* | Response-bias *r* | Verification *r* | Updating *r* | Evidence-evaluation *r* |
 |---|---|---|---|---|---|
@@ -321,7 +321,7 @@ but not unstably.
 ### The Evidence-Evaluation Case Study
 
 The most informative result in this study is arguably the contrast between
-the V1 and V1.2 evidence-evaluation models rather than either result in
+the V1 and V1.1 evidence-evaluation models rather than either result in
 isolation. In V1, evidence comprehension existed only as an internal process
 variable that the belief-movement calculation used but never exposed as an
 observable response — essentially, no real assessment could ever have
