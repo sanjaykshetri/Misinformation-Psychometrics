@@ -103,17 +103,19 @@ The updating task was redesigned (V1.1) so that evidence comprehension is a dire
 
 This is a substantial improvement over the V1 design, where evidence-evaluation recovery was only r = 0.133 and was frequently sign-reversed across Monte Carlo conditions (see below).
 
-### Monte Carlo robustness sweep (Study 0C, V1.1)
+### Monte Carlo robustness sweep (Study 0C, V1.1, replicated)
 
-The four item-level models (veracity, verification, updating, evidence comprehension) were re-fit on newly simulated datasets that each vary one factor away from the baseline: sample size (250-2,000), item count (20-80 veracity items), item difficulty spread, response noise, carelessness rate, and latent correlation strength. Full per-condition results are in [monte_carlo_results.csv](monte_carlo_results.csv).
+The four item-level models (veracity, verification, updating, evidence comprehension) were re-fit on newly simulated datasets that each vary one factor away from the baseline: sample size (250-2,000), item count (20-80 veracity items), item difficulty spread, response noise, carelessness rate, and latent correlation strength — each run with 3 replicate seeds to estimate mean ± SD rather than a single point estimate. A 14th condition tests a two-round updating item design (see below). Full per-replicate results are in [monte_carlo_results.csv](monte_carlo_results.csv); the aggregated table is in [monte_carlo_summary.csv](monte_carlo_summary.csv).
 
-- Discernment recovery is stable across all conditions (r = 0.87-0.94).
-- Response-bias recovery is stable but consistently moderate (r = 0.49-0.57).
-- Verification recovery is stable (r = 0.78-0.84).
-- Updating recovery ranges from r = 0.26 to 0.55, generally improving with higher item difficulty spread and response noise.
-- Evidence-evaluation recovery is now stable and strong across every condition (r = 0.68-0.75), with no sign reversals — a qualitative change from the V1 design, where the equivalent range included negative values.
+- Discernment recovery is stable across all conditions (mean r = 0.88-0.94, SD ≤ 0.02).
+- Response-bias recovery is stable but consistently moderate (mean r = 0.53-0.59).
+- Verification recovery is stable (mean r = 0.78-0.84).
+- Updating recovery ranges from mean r = 0.29 to 0.47 (SD up to 0.08, the largest relative spread of the five), generally improving with higher item difficulty spread, response noise, and weaker latent correlation.
+- Evidence-evaluation recovery is stable and strong across every condition (mean r = 0.69-0.74, SD ≤ 0.03), with no sign reversals — a qualitative change from the V1 design, where the equivalent range included negative values.
 
-The practical implication is that the current architecture is now robust across a wide range of design choices for all five estimated quantities: discernment, response bias, verification, updating, and evidence evaluation.
+**Two-round updating test.** To test whether a richer updating item structure improves recovery, each updating item was given a second, independent corrective-evidence exposure (starting from the round-1 post-judgment belief). Naively pooling both rounds' belief-movement data into the updating model *reduced* recovery (single-seed test: 0.383 → 0.277), because round 2 starts from an already-partially-corrected belief, compressing the available movement range and diluting the signal. Restricting movement scoring to round 1 while pooling both rounds' comprehension-check responses avoided this: updating recovery held steady (0.346 ± 0.032 vs. baseline's 0.346 ± 0.032 — statistically indistinguishable) while evidence-evaluation recovery improved further, from 0.716 ± 0.008 to 0.817 ± 0.011. `fit_updating_model` now auto-detects multi-round data and applies this restriction automatically.
+
+The practical implication is that the current architecture is robust across a wide range of design choices for all five estimated quantities, and that adding comprehension-check opportunities (not repeated belief-revision opportunities) is the more promising direction for improving evidence-evaluation measurement further. Updating remains the dimension most in need of a genuinely different item design, not just more trials of the same kind.
 
 ## Discussion
 

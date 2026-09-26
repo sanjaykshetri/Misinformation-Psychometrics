@@ -109,17 +109,21 @@ def fit_evidence_comprehension_model(updating):
     comprehension_correct is a directly observed per-trial response (did the
     participant correctly grasp the corrective evidence?), so this reuses the
     same person-item logistic model as verification rather than inferring the
-    trait indirectly from belief-movement noise.
+    trait indirectly from belief-movement noise. Uses `trial_id` instead of
+    `item_id` when present, so that multi-round updating data (where the same
+    item_id appears twice with different evidence parameters) treats each
+    round as its own item rather than averaging over both.
     """
     data = updating.sort_values(["participant_id", "item_id"]).copy()
+    trial_col = "trial_id" if "trial_id" in data.columns else "item_id"
     participant_codes, participant_values = pd.factorize(data["participant_id"])
-    item_codes, _ = pd.factorize(data["item_id"])
+    item_codes, _ = pd.factorize(data[trial_col])
     ability, _ = _fit_logistic_person_item(
         data["comprehension_correct"].to_numpy(float),
         participant_codes,
         item_codes,
         len(participant_values),
-        data["item_id"].nunique(),
+        data[trial_col].nunique(),
     )
     return pd.DataFrame({
         "participant_id": participant_values,
@@ -139,8 +143,18 @@ def fit_updating_model(updating):
     trial-level response would conflate the item-level effect of
     comprehension with the between-person variance that the random intercept
     is meant to capture, suppressing the updating-ability estimate.
+
+    If a `round` column is present (multi-round updating items), only round 1
+    is used for movement scoring: later rounds start from an
+    already-partially-corrected belief, which compresses the available
+    movement range and dilutes rather than sharpens the updating estimate
+    (confirmed empirically; see docs/project_status.md). Evidence-comprehension
+    scoring does not have this problem and should still use all rounds via
+    fit_evidence_comprehension_model.
     """
     data = updating.copy()
+    if "round" in data.columns:
+        data = data[data["round"] == 1].copy()
     data["evidence_strength_c"] = data["evidence_strength"] - data["evidence_strength"].mean()
     person_mean_comprehension = data.groupby("participant_id")["comprehension_correct"].transform("mean")
     data["comprehension_within"] = data["comprehension_correct"] - person_mean_comprehension

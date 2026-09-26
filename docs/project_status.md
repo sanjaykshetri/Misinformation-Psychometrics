@@ -89,43 +89,54 @@ gap noted below.
 
 Implemented in [study_00c_monte_carlo.py](../studies/study_00_simulation/study_00c_monte_carlo.py): a one-factor-at-a-time
 sensitivity sweep re-running the Study 0B models on freshly simulated datasets
-that each vary one generating condition away from baseline. Full results in
-[monte_carlo_results.csv](../studies/study_00_simulation/monte_carlo_results.csv).
+that each vary one generating condition away from baseline, now with **3
+replicate seeds per condition** (mean ± SD reported below). Full per-replicate
+results are in [monte_carlo_results.csv](../studies/study_00_simulation/monte_carlo_results.csv); the
+aggregated table is in [monte_carlo_summary.csv](../studies/study_00_simulation/monte_carlo_summary.csv).
 
 | Factor varied | Discernment r | Response-bias r | Verification r | Updating r | Evidence-evaluation r |
 |---|---|---|---|---|---|
-| Baseline (n=1000, 40 items) | 0.927 | 0.549 | 0.816 | 0.383 | 0.707 |
-| n = 250 | 0.913 | 0.507 | 0.832 | 0.382 | 0.708 |
-| n = 2000 | 0.917 | 0.525 | 0.815 | 0.357 | 0.736 |
-| 20 veracity items | 0.891 | 0.538 | 0.828 | 0.382 | 0.697 |
-| 80 veracity items | 0.933 | 0.548 | 0.795 | 0.441 | 0.720 |
-| Narrower item difficulty | 0.907 | 0.571 | 0.836 | 0.338 | 0.740 |
-| Wider item difficulty | 0.927 | 0.551 | 0.811 | 0.551 | 0.721 |
-| Lower response noise | 0.899 | 0.531 | 0.834 | 0.264 | 0.736 |
-| Higher response noise | 0.914 | 0.497 | 0.836 | 0.438 | 0.717 |
-| Lower carelessness | 0.936 | 0.543 | 0.843 | 0.423 | 0.748 |
-| Higher carelessness | 0.871 | 0.490 | 0.785 | 0.398 | 0.684 |
-| Weaker latent correlation | 0.901 | 0.550 | 0.778 | 0.392 | 0.710 |
-| Moderately weaker latent correlation | 0.909 | 0.562 | 0.810 | 0.394 | 0.713 |
+| Baseline (n=1000, 40 items) | 0.923 ± 0.008 | 0.544 ± 0.005 | 0.832 ± 0.016 | 0.346 ± 0.032 | 0.716 ± 0.008 |
+| n = 250 | 0.910 ± 0.017 | 0.532 ± 0.098 | 0.824 ± 0.026 | 0.292 ± 0.080 | 0.739 ± 0.032 |
+| n = 2000 | 0.917 ± 0.005 | 0.569 ± 0.007 | 0.817 ± 0.004 | 0.362 ± 0.068 | 0.717 ± 0.009 |
+| 20 veracity items | 0.878 ± 0.014 | 0.562 ± 0.029 | 0.837 ± 0.014 | 0.333 ± 0.054 | 0.721 ± 0.015 |
+| 80 veracity items | 0.937 ± 0.003 | 0.565 ± 0.015 | 0.833 ± 0.011 | 0.412 ± 0.080 | 0.737 ± 0.018 |
+| Narrower item difficulty | 0.909 ± 0.005 | 0.542 ± 0.010 | 0.835 ± 0.004 | 0.322 ± 0.025 | 0.727 ± 0.027 |
+| Wider item difficulty | 0.930 ± 0.012 | 0.540 ± 0.013 | 0.781 ± 0.023 | 0.339 ± 0.029 | 0.731 ± 0.018 |
+| Lower response noise | 0.909 ± 0.007 | 0.570 ± 0.019 | 0.827 ± 0.011 | 0.303 ± 0.038 | 0.727 ± 0.015 |
+| Higher response noise | 0.915 ± 0.002 | 0.539 ± 0.016 | 0.827 ± 0.004 | 0.418 ± 0.044 | 0.730 ± 0.019 |
+| Lower carelessness | 0.931 ± 0.003 | 0.568 ± 0.013 | 0.840 ± 0.017 | 0.353 ± 0.054 | 0.727 ± 0.012 |
+| Higher carelessness | 0.877 ± 0.017 | 0.534 ± 0.021 | 0.784 ± 0.018 | 0.321 ± 0.068 | 0.691 ± 0.014 |
+| Weaker latent correlation | 0.909 ± 0.006 | 0.590 ± 0.031 | 0.792 ± 0.035 | 0.472 ± 0.043 | 0.712 ± 0.020 |
+| Moderately weaker latent correlation | 0.916 ± 0.002 | 0.554 ± 0.024 | 0.802 ± 0.022 | 0.407 ± 0.017 | 0.704 ± 0.004 |
+| **Two-round updating items** | 0.915 ± 0.003 | 0.565 ± 0.036 | 0.819 ± 0.011 | 0.367 ± 0.039 | **0.817 ± 0.011** |
 
-**Conclusion:** all five estimated quantities are now stable in sign and
-magnitude across every condition tested. Discernment, response bias, and
-verification recovery were already stable in the V1 design. Evidence-evaluation
-recovery (r = 0.68-0.75 everywhere, no sign reversals) is the qualitative change
-from the V1.1 redesign — it was previously the least stable and often
+**Conclusion:** with real repeated-sampling variability now estimated, all
+five quantities remain stable in sign across every condition, with SDs small
+relative to their means (updating has the largest relative spread, consistent
+with it being the weakest-recovered dimension). The **two-round updating item
+test** (giving each updating item a second, independent corrective-evidence
+exposure) was added to test whether a richer item structure improves updating
+recovery, per the roadmap in the previous version of this report. Naively
+pooling both rounds' belief-movement data *reduced* updating recovery (0.383 →
+0.277 in an initial single-seed test), because the second round starts from an
+already-partially-corrected belief, compressing the available movement range.
+Restricting movement scoring to round 1 while still pooling both rounds'
+comprehension-check responses avoided this problem: updating recovery held
+steady (0.346 ± 0.032, statistically indistinguishable from baseline) while
+evidence-evaluation recovery improved further (0.716 ± 0.008 → 0.817 ± 0.011).
+`fit_updating_model` in `model_recovery.py` now auto-detects multi-round data
+and applies this restriction automatically.
 negative. Updating recovery remains the most modest (r = 0.26-0.55).
 
 ### 2.5 Known limitations / open issues
 
-- This is a first-pass sweep (one simulated replicate per condition), not a
-  fully replicated Monte Carlo design with repeated-sampling variability
-  estimated at each condition.
-- Updating recovery, while now well-identified, remains only moderate. This
-  may be a genuine property of the construct (limited independent signal once
-  comprehension and evidence strength are accounted for) or may reflect that a
-  single initial-judgment/correction/post-judgment cycle per item is still a
-  thin design — worth testing with a richer item structure before concluding
-  either way.
+- Updating recovery, while now well-identified, remains the most modest of the
+  five dimensions (mean r ≈ 0.29-0.47 across conditions). The two-round test
+  suggests additional comprehension-check opportunities help evidence
+  evaluation more than they help updating itself; whether a fundamentally
+  different updating item design (not just more rounds) would help further is
+  still open.
 - All of the above is evidence about a synthetic, programmed data-generating
   process. None of it is evidence of construct validity in real people.
 
@@ -141,14 +152,13 @@ properties) points to the following next steps, in order:
 
 ### 3.1 Close out Study 0 (short-term, low-cost)
 
-1. **Upgrade the Monte Carlo sweep to a real replicated design**: multiple
-   seeds per condition to get a mean ± spread for each recovery correlation,
-   not just a point estimate.
-2. **Test whether a richer updating item structure improves updating recovery
-   further** (e.g., multiple evidence rounds, or an explicit weak-then-strong
-   evidence sequence) — updating recovery (r = 0.26-0.55) is now well-identified
-   but still the most modest of the five dimensions.
-3. ~~Resolve the data-provenance gap~~ and ~~redesign the evidence-evaluation
+1. ~~Upgrade the Monte Carlo sweep to a real replicated design~~ and
+   ~~test whether a richer updating item structure improves updating
+   recovery~~ — both done; see section 2.4 above. Remaining open question:
+   whether a non-round-based redesign of the updating item (rather than
+   repeating the same mechanism twice) could improve updating recovery
+   further, since the two-round test mainly benefited evidence evaluation.
+2. ~~Resolve the data-provenance gap~~ and ~~redesign the evidence-evaluation
    measurement~~ — both done; see section 2.4 above.
 
 ### 3.2 Study 1 — item and instrument development (next major phase)

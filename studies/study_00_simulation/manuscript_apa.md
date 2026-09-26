@@ -2,7 +2,7 @@ Running head: MISINFORMATION VULNERABILITY SIMULATION BENCHMARK
 
 # A Blind-Analysis Simulation Benchmark for Multidimensional Measurement of Misinformation Vulnerability
 
-[Author Name]
+[Sanjay Kumar Chhetri]
 
 [Affiliation]
 
